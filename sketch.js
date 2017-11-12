@@ -593,7 +593,7 @@ function setup() {
         }
     ];
     tutorial = [
-        "Welcome to E-waste Repair Shop!",
+        "Welcome to Salvage, a game about e-waste prevention!",
         "Did you know that 40 million tons of electronic devices are thrown away each year?",
         "These electronic devices contain harmful materials, like lead, cadmium, and mercury.",
         "60% of these end up in landfills, where these toxins leach into the soil and water.",
