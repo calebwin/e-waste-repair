@@ -100,7 +100,7 @@ function preload() {
 	brokenspeaker1 = loadImage("assets/brokenspeaker1.png");
 	brokenTV1 = loadImage("assets/brokenTV1.png");
 	brokenwm1 = loadImage("assets/brokenwm1.png");
-    brokenCPU = loadImage("assets/brokenCPU.png");
+    //brokenCPU = loadImage("assets/brokenCPU.png");
     brokenipad2 = loadImage("assets/brokenipad2.png");
     BrokenKeyboard = loadImage("assets/BrokenKeyboard.png");
     BrokenMouse = loadImage("assets/BrokenMouse.png");
@@ -435,7 +435,7 @@ function setup() {
                 }
             ]
 		}, // Adjust
-		{
+		/*{
 			name : "Dell Inspiron",
 			image : brokenCPU,
 			width : 40,
@@ -457,7 +457,7 @@ function setup() {
                     count : 57
                 }
             ]
-		}, // Adjust
+		},*/ // Adjust
 		{
 			name : "iPad Pro",
 			image : brokenipad2,
