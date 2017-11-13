@@ -632,7 +632,6 @@ function setup() {
     ];
     finalmessagegroups = [
         [
-            "Wow, you did a great job repairing or recycling broken electronics!",
             "No fish died due to toxins leaching into aquatic environments.",
             "Nobody experienced adverse health effects due to drinking contaminated water.",
             "Fewer children are suffering from birth defects and neurological conditions due to lead and mercury in the environment.",
