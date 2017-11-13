@@ -589,7 +589,7 @@ function setup() {
     manualCount = 5;
     peopleCount = 3;
     toxinCount = 0;
-    conveyorBeltSpeed = 2;
+    conveyorBeltSpeed = 2; // don't change this w/o changing the other place where this is set in draw()
     message = "";
     messageY = -50;
     messageToY = -50;
@@ -668,7 +668,18 @@ function setup() {
 function draw() {
     background(204, 177, 130);
     textFont("fantasy");
-    fR++;
+    
+    conveyorBeltSpeed = 2;
+    for(var i = 0; i < electronics.length; i++) {
+        var eI = electronics[i];
+        if(mouseOver(eI.x,eI.y,eI.w,eI.h)) {
+            conveyorBeltSpeed = 0;
+        }
+    }
+    
+    if(conveyorBeltSpeed > 0) {
+        fR++;
+    }
     
     if(mouseIsClicked&&paused) {
         tutorialIndex++;
@@ -714,7 +725,7 @@ function draw() {
 	fill(73, 63, 46);
     
     textAlign(LEFT,CENTER);
-    text(health + " HP", 50, 50);
+    text(health + " [HEALTH]", 50, 50);
     text(toxinCount + " Toxins (PPM)", 50, 80);
     textAlign(RIGHT,CENTER);
     text(money + "$", width-50, 50);
@@ -753,7 +764,7 @@ function draw() {
     
 	fill(73, 63, 46);
 	
-    // Draw electronics
+    // Draw electronics)
     for(var i = 0; i < electronics.length; i++) {
         var eI = electronics[i];
         // Move electronics
@@ -761,6 +772,8 @@ function draw() {
         image(eI.image,eI.x,eI.y,eI.w,eI.h);
         textSize(15);
         text(eI.name,eI.x+eI.w/2,eI.y-15);
+        
+        // Electronics interaction
         if(health>0 && !paused) {
             eI.x+=(eI.toX-eI.x)/5;
             eI.y+=(eI.toY-eI.y)/5;
@@ -800,8 +813,6 @@ function draw() {
                     eI.toY+=5;
                 }
             }
-        
-            // Electronics interaction
             if(mouseIsClicked && mouseOver(eI.x,eI.y,eI.w,eI.h)) {
                 if(eI.state==="onBelt") {
                     if(fixingStationsOpen > 0) {
@@ -1001,7 +1012,7 @@ function draw() {
     
 	
     if(tutorialIndex===-1) {
-        fill(0,0,0,170);
+        fill(0,0,0,185);
         rect(0,0,width,height);
         textSize(180);
         fill(173, 163, 146);
