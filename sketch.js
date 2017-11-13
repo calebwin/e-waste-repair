@@ -16,8 +16,18 @@ var fixingStations;
 
 var mouseIsClicked;
 
+var electronicsDropNumber = 0;
+var electronicsDropAmount = 5;
+
 function spawnElectronics() {
-    var eDI = electronicsData[floor(random(0,electronicsData.length))];
+    electronicsDropNumber++;
+    var eDI = electronicsData[floor(random(0,electronicsDropAmount))];
+    if(electronicsDropNumber%5===0) {
+        electronicsDropAmount += 3;
+    }
+    if(electronicsDropAmount > electronicsData.length) {
+        electronicsDropAmount = electronicsData.length;
+    }
     electronics.push({
         x : width*9/10-40-30,
         toX : width*9/10-40-30,
@@ -47,6 +57,8 @@ var SPAWN_RATE;
 var health, money, toolCount, manualCount, peopleCount, toxinCount;
 var counts;
 var toolBuyOn = true;
+
+var randomMessageNumber;
 
 var conveyorBeltSpeed;
 
@@ -111,6 +123,7 @@ function setup() {
     //alert(5);
     width = windowWidth;
     height = windowHeight;
+    randomMessageNumber = -1;
     createCanvas(width, height);
 	electronicsData = [
 		{
@@ -570,8 +583,8 @@ function setup() {
     fixingStationsOpen = 3;
     recycleStationOpen = true;
     SPAWN_RATE = 170
-    health = 250;
-    money = 750;
+    health = 150;
+    money = 650;
     toolCount = 5;
     manualCount = 5;
     peopleCount = 3;
@@ -611,14 +624,14 @@ function setup() {
         "There is one more thing you need to know.",
         "Before you fix something, you have to know how to fix it. So you have to first own the manual\n for a device before you can fix it.",
         "At first, you only own the first 5 manuals. You can always buy more by clicking the button \nat the bottom. As you buy manuals you will be able to fix more electronics.",
+        "Quick tip : The best strategy is to buy as many manuals as you can as soon as possible.\n This way you can maximize the number of electronics you know how to fix.",
         "As buy more tools and hire more people, you fix electronics faster.",
         "Alright.",
         "Quick recap : Click things to start fixing them. Buy tools and hire people to fix things faster. \nBuy manuals to be able to fix more electronics. Earn up to $1500 without losing all your health.",
         "Are you ready?",
     ];
-    tutorialIndex = 0;
+    tutorialIndex = -1;
     paused = true;
-    postMessage(tutorial[tutorialIndex] +"\n(Click to continue)", Math.POSITIVE_INFINITY);
     popups = [
         "You caused 10 people to be hospitalized after drinking chromium contaminated water.",
         "You have caused 5 fish to die due to flame retardants leaching into pond water.",
@@ -633,20 +646,20 @@ function setup() {
     finalmessagegroups = [
         [
             "No fish died due to toxins leaching into aquatic environments.",
-            "Nobody experienced adverse health effects due to drinking contaminated water.",
-            "Fewer children are suffering from birth defects and neurological conditions due to lead and mercury in the environment.",
+            "Nobody experienced adverse health effects. You kept to water clean.",
+            "Fewer children are suffering from neurological conditions due to lead and mercury in the environment.",
             "The air quality has improved and lung cancer incidence has decreased.",
         ],
         [
             "You caused 10 fish to die due to toxins leaching into aquatic environments.",
             "You caused 5 people to become sick after drinking contaminated water.",
-            "You increased the risk by 2% for children to suffer from birth defects and neurological conditions due to lead and mercury in the environment.",
+            "You increased the risk by 2% for children to suffer from neurological conditions due to lead and mercury in the environment.",
             "You caused the air quality to decrease by 2%, and lung cancer incidence has increased.",
         ],
         [
             "You caused 20 fish to die due to toxins leaching into aquatic environments.",
             "You caused 10 people to become sick after drinking contaminated water.",
-            "You increased the risk by 5% for children to suffer from birth defects and neurological conditions due to lead and mercury in the environment.",
+            "You increased the risk by 5% for children to suffer from neurological conditions due to lead and mercury in the environment.",
             "You caused the air quality to decrease by 5%, and lung cancer incidence has increased."
         ]
     ];
@@ -654,15 +667,27 @@ function setup() {
 
 function draw() {
     background(204, 177, 130);
-    textFont("serif");
+    textFont("fantasy");
     fR++;
-	
+    
     if(mouseIsClicked&&paused) {
         tutorialIndex++;
         postMessage(tutorial[tutorialIndex] +"\n(Click to continue)", Math.POSITIVE_INFINITY);
         if(tutorialIndex===tutorial.length) {
             paused=false;
             postMessage("Let's begin.");
+        }
+    }
+    if(tutorialIndex<tutorial.length) {
+        fill(73, 63, 46,100);
+        rect(width-50,75,-140,30);
+        fill(73, 63, 46);
+        textAlign(RIGHT,CENTER);
+        textSize(20);
+        text("SKIP TUTORIAL", width-60, 90);
+        if(mouseOver(width-50-140,75,140,30) && mouseIsClicked) {
+            tutorialIndex=tutorial.length-1;
+            postMessage(tutorial[tutorialIndex] +"\n(Click to continue)", Math.POSITIVE_INFINITY);
         }
     }
     
@@ -695,7 +720,10 @@ function draw() {
     text(money + "$", width-50, 50);
     
     // Draw conveyor belt
-    rect(width/10, height/2-100, width*8/10, 30);
+    strokeWeight(5);
+    stroke(43, 33, 16);
+    rect(width/10, height/2-100, width*8/10, 30, 90);
+    noStroke();
     
     if(fR % SPAWN_RATE === 0 && health>0 && !paused) {
         spawnElectronics();
@@ -707,6 +735,21 @@ function draw() {
     rect(width*2/5-75,height/2-70+40,150,150);
     rect(width*3/5-75,height/2-70+40,150,150);
     rect(width*4/5-75,height/2-70+40,150,150);
+    textSize(25);
+	fill(73, 63, 46,130);
+    textAlign(CENTER,CENTER);
+    if(fixingStations[0].open) {
+        text("FIXING\nSTATION",width*1/5-75+75,height/2-70+40+75);
+    }
+    if(fixingStations[1].open) {
+        text("FIXING\nSTATION",width*2/5-75+75,height/2-70+40+75);
+    }
+    if(fixingStations[2].open) {
+        text("FIXING\nSTATION",width*3/5-75+75,height/2-70+40+75);
+    }
+    if(recycleStationOpen) {
+        text("RECYCLING\nCENTER",width*4/5-75+75,height/2-70+40+75);
+    }
     
 	fill(73, 63, 46);
 	
@@ -798,7 +841,7 @@ function draw() {
                             eI.toX=width*4/5-eI.w/2;
                             eI.toY=height/2+40-eI.h/2;
                             eI.state = "recycling";
-                            eI.timeToFix = 2;
+                            eI.timeToFix = floor(random(4,8))+floor(random(1,10))/10;
                             recycleStationOpen=false;
                         } else {
                             // you don't have any stations open
@@ -916,10 +959,10 @@ function draw() {
         }
     }
     
-    if(health<=0 || money > 1500) {
+    if((health<=0 || money > 1500) && randomMessageNumber === -1) {
         health=0;
         loseScreenYTo = 0;
-        randomSeed(frameCount);
+        randomMessageNumber = floor(random(0,finalmessagegroups[0].length));
     }
     loseScreenY+=(loseScreenYTo-loseScreenY)/10;
     push();
@@ -933,24 +976,39 @@ function draw() {
     } else {
         text("You earned " + (money-750)>0?(money-750):money + "$", width/2, height/2 - 100);
     }
+    textFont("serif");
     textSize(15);
-    text("(...out of $1500) In the process...", width/2, height/2 - 70)
+    text("(...out of your goal : $1500) In the process...", width/2, height/2 - 70)
     textSize(20);
     text("You contributed " + toxinCount + " toxins (PPM) to the environments surrounding e-waste dumps \nincluding Agbogbloshie in Ghana and Guiya in Guangdong, China", width/2, height/2-20);
     for(var i = 0; i < counts.length; i++) {
         text("You added " + counts[i].count + " grams of " + counts[i].countName + " to the environment", width/2, height/2+30+20*i);
     }
-    if(toxinCount<15) {
-        text("Wow, you did a great job repairing or recycling broken electronics!",width/2,height/2+30+20+40);
-        text(finalmessagegroups[0][floor(random(0,finalmessagegroups[0].length))],width/2,height/2+30+20+60);
-    } else if(toxinCount<30) {
-        text("Oh no! You need to repair and recycle your electronics instead of sending them to the landfill.",width/2,height/2+30+20+40);
-        text(finalmessagegroups[1][floor(random(0,finalmessagegroups[1].length))],width/2,height/2+30+20+60);
-    } else {
-        text("Oh no! You sent too much e-waste to the landfill. You need to repair and recycle your electronics more.",width/2,height/2+30+20+40);
-        text(finalmessagegroups[2][floor(random(0,finalmessagegroups[2].length))],width/2,height/2+30+20+60);
+    if(randomMessageNumber!=-1) {
+        if(toxinCount<15) {
+            text("Wow, you did a great job repairing or recycling broken electronics!",width/2,height/2+30+20+40);
+            text(finalmessagegroups[0][randomMessageNumber],width/2,height/2+30+20+60);
+        } else if(toxinCount<30) {
+            text("Oh no! You need to repair and recycle your electronics instead of sending them to the landfill.",width/2,height/2+30+20+40);
+            text(finalmessagegroups[1][randomMessageNumber],width/2,height/2+30+20+60);
+        } else {
+            text("Oh no! You sent too much e-waste to the landfill. You need to repair and recycle your electronics more.",width/2,height/2+30+20+40);
+            text(finalmessagegroups[2][randomMessageNumber],width/2,height/2+30+20+60);
+        }
+        text("Reload this page to play again",width/2,height/2+30+20+100)
     }
     pop();
+    
+	
+    if(tutorialIndex===-1) {
+        fill(0,0,0,170);
+        rect(0,0,width,height);
+        textSize(180);
+        fill(173, 163, 146);
+        text("SALVAGE",width/2,height/2);
+        textSize(30);
+        text("(tap to play)",width/2,height/2+100);
+    }
     
     mouseIsClicked = false;
 }
