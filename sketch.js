@@ -570,7 +570,7 @@ function setup() {
     fixingStationsOpen = 3;
     recycleStationOpen = true;
     SPAWN_RATE = 170
-    health = 150;
+    health = 250;
     money = 750;
     toolCount = 5;
     manualCount = 5;
