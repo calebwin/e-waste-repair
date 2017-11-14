@@ -628,6 +628,8 @@ function setup() {
         "As buy more tools and hire more people, you fix electronics faster.",
         "Alright.",
         "Quick recap : Click things to start fixing them. Buy tools and hire people to fix things faster. \nBuy manuals to be able to fix more electronics. Earn up to $1500 without losing all your health.",
+        "Quick recap : Click things to start fixing them. Buy tools and hire people to fix things faster. \nBuy manuals to be able to fix more electronics. Earn up to $1500 without losing all your health.",
+        "Quick recap : Click things to start fixing them. Buy tools and hire people to fix things faster. \nBuy manuals to be able to fix more electronics. Earn up to $1500 without losing all your health.",
         "Are you ready?",
     ];
     tutorialIndex = -1;
