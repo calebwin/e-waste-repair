@@ -736,7 +736,7 @@ function draw() {
     rect(width/10, height/2-100, width*8/10, 30, 90);
     noStroke();
     
-    if(fR % SPAWN_RATE === 0 && health>0 && !paused) {
+    if(fR % SPAWN_RATE === 0 && health>0 && !paused && conveyorBeltSpeed > 0) {
         spawnElectronics();
     }
     
