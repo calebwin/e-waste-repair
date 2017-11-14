@@ -947,9 +947,9 @@ function draw() {
     rect(width*3/5-75,height/2-70+40+220,width*1/5+150,50);
     fill(214, 183, 130);
     if(manualCount<13) {
-        text("Buy manuals (1 for $65)",width*3/5-75+width*1/10+75,height/2-70+40+220+25);
+        text("Buy manuals (1 for $85)",width*3/5-75+width*1/10+75,height/2-70+40+220+25);
     } else {
-        text("Buy manuals (1 for $95)",width*3/5-75+width*1/10+75,height/2-70+40+220+25);
+        text("Buy manuals (1 for $125)",width*3/5-75+width*1/10+75,height/2-70+40+220+25);
     }
     
 	fill(73, 63, 46);
@@ -959,13 +959,13 @@ function draw() {
     if(mouseOver(width*3/5-75,height/2-70+40+220,width*1/5+150,50)) {
         if(mouseIsClicked) {
             if(manualCount < 13) {
-                if(money-65>=0) {
-                    money -= 65;
+                if(money-85>=0) {
+                    money -= 85;
                     manualCount += 1;
                 }
             } else {
-                if(money-95>=0) {
-                    money -= 95;
+                if(money-125>=0) {
+                    money -= 125;
                     manualCount += 1;
                 }
             }
